@@ -17,14 +17,21 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Conexión MongoDB
+// Conexión MongoDB con timeout aumentado y mejor manejo de errores
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 15000, // Aumenta el timeout a 15 segundos
+  socketTimeoutMS: 45000, // Aumenta el socket timeout
 }).then(() => {
   console.log('Conectado a MongoDB Atlas');
 }).catch(err => {
   console.error('Error conectando a MongoDB:', err);
+  // Reintentar conexión
+  setTimeout(() => {
+    console.log('Reintentando conexión...');
+    process.exit(1); // Esto hará que Render reinicie el servicio
+  }, 5000);
 });
 
 // Esquema del formulario con validaciones mejoradas
