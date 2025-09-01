@@ -11,7 +11,9 @@ const PORT = 5000; // Puerto en el que se ejecutará el servidor
 // --- Middlewares ---
 // 1. CORS: Permite solicitudes desde otros orígenes (tu frontend de React)
 app.use(cors({
-  origin: 'http://localhost:8080' // Reemplaza con la URL de tu frontend si es diferente
+  origin: ['https://frontend-autonomia.vercel.app/', 'http://localhost:8080'], // Reemplaza con la URL de tu frontend si es diferente
+  methods: ['GET', 'POST'],
+  credentials : true
 }));
 
 // 2. Body Parser: Permite a Express leer el cuerpo de las solicitudes POST en formato JSON
